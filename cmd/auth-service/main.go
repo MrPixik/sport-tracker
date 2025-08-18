@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/mrpixik/sport-tracker/internal/config"
+	"github.com/mrpixik/sport-tracker/internal/logger"
 )
 
 func main() {
@@ -11,7 +12,10 @@ func main() {
 
 	fmt.Println(cfg)
 
-	//TODO: init logger
+	log := logger.MustInit(cfg.Env)
+
+	log.Info("Logger initialized")
+	log.Debug("Debug messages are enabled")
 
 	//TODO: init storage
 
