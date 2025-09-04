@@ -25,15 +25,10 @@ services:
 
   auth-service-migrate:
     image: migrate/migrate
-#    environment:
-#      DB_USER: ${POSTGRES_USER}
-#      DB_PASSWORD: ${POSTGRES_PASSWORD}
-#      DB_HOST: auth-service-db
-#      DB_NAME: auth-db
     command:
       - "-path=/migrations/auth"
       - "-database"
-      - "postgres://pixik:pixikpass2025@auth-service-db:5432/auth-db?sslmode=disable"
+      - "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@auth-service-db:5432/auth-db?sslmode=disable"
       - "up"
     volumes:
       - ./migrations/auth:/migrations/auth
