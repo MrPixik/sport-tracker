@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/mrpixik/sport-tracker/internal/config"
-	"github.com/mrpixik/sport-tracker/internal/logger"
+	"github.com/mrpixik/sport-tracker/internal/auth/config"
+	"github.com/mrpixik/sport-tracker/pkg/logger"
 )
 
 func main() {

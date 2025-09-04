@@ -8,8 +8,8 @@ import (
 )
 
 type Config struct {
-	Env        string `yaml:"env"`
-	StorageDSN string `yaml:"storage"`
+	Env        string
+	StorageDSN string
 	HTTPServer `yaml:"http_server"`
 }
 
@@ -34,6 +34,9 @@ func MustLoad() Config {
 	if err := cleanenv.ReadConfig(configPath, &config); err != nil {
 		log.Fatalf("unable to load config: \n%s", err.Error())
 	}
+
+	//config.Env = os.Getenv("ENV")
+	////TODO storageDSN
 
 	return config
 }
