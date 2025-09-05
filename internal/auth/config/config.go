@@ -1,42 +1,30 @@
 package config
 
 import (
-	"github.com/ilyakaznacheev/cleanenv"
+	"github.com/caarlos0/env/v11"
 	"log"
-	"os"
 	"time"
 )
 
 type Config struct {
-	Env        string
-	StorageDSN string
-	HTTPServer `yaml:"http_server"`
+	Env        string `env:"ENVIRONMENT" envDefault:"local"`
+	StorageDSN string `env:"STORAGE_DSN,required"`
+	HTTPServer
 }
 
 type HTTPServer struct {
-	Address     string        `yaml:"address"`
-	ReadTimeout time.Duration `yaml:"read_timeout"`
-	IdleTimeout time.Duration `yaml:"idle_timeout"`
+	Address     string        `env:"SERVER_ADDR" envDefault:"localhost:8080"`
+	ReadTimeout time.Duration `env:"READ_TIMEOUT" envDefault:"4s"`
+	IdleTimeout time.Duration `env:"IDLE_TIMEOUT" envDefault:"120s"`
 }
 
 func MustLoad() Config {
-	configPath := os.Getenv("AUTH_CONFIG_PATH")
-
-	if configPath == "" {
-		log.Fatal("environment variable AUTH_CONFIG_PATH does not set")
-	}
-
-	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		log.Fatalf("no config file in %s", configPath)
-	}
-
 	var config Config
-	if err := cleanenv.ReadConfig(configPath, &config); err != nil {
+
+	err := env.Parse(&config)
+	if err != nil {
 		log.Fatalf("unable to load config: \n%s", err.Error())
 	}
-
-	//config.Env = os.Getenv("ENV")
-	////TODO storageDSN
 
 	return config
 }

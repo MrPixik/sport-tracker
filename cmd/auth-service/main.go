@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/mrpixik/sport-tracker/internal/auth/config"
 	"github.com/mrpixik/sport-tracker/pkg/logger"
 )
@@ -10,7 +9,7 @@ func main() {
 	// $env:auth_config_path="configs/auth/local.yaml"
 	cfg := config.MustLoad()
 
-	fmt.Println(cfg)
+	//fmt.Println(cfg)
 
 	log := logger.MustInit(cfg.Env)
 

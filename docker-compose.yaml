@@ -1,15 +1,4 @@
 services:
-  auth-service:
-    image: auth-service:latest
-    container_name: auth-service
-    ports:
-      - '80:80'
-    restart: unless-stopped
-    networks:
-      - local
-    depends_on:
-      - auth-service-db
-      - auth-service-migrate
 
   auth-service-db:
     image: postgres
@@ -25,6 +14,7 @@ services:
 
   auth-service-migrate:
     image: migrate/migrate
+    restart: on-failure:5
     command:
       - "-path=/migrations/auth"
       - "-database"
@@ -36,6 +26,21 @@ services:
       - local
     depends_on:
       - auth-service-db
+
+  auth-service:
+    image: auth-service:latest
+    container_name: auth-service
+    environment:
+      ENVIRONMENT: local
+      STORAGE_DSN: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@auth-service-db:5432/auth-db?sslmode=disable"
+    ports:
+      - '80:80'
+    restart: unless-stopped
+    networks:
+      - local
+    depends_on:
+      - auth-service-db
+      - auth-service-migrate
 
 networks:
   local:
