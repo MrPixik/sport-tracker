@@ -35,7 +35,7 @@ services:
       STORAGE_DSN: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@auth-service-db:5432/auth-db?sslmode=disable"
     ports:
       - '80:80'
-    restart: unless-stopped
+    restart: on-failure:5
     networks:
       - local
     depends_on:
