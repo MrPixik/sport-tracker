@@ -13,9 +13,9 @@ type Config struct {
 }
 
 type HTTPServer struct {
-	Address     string        `env:"SERVER_ADDR" envDefault:"localhost:8080"`
-	ReadTimeout time.Duration `env:"READ_TIMEOUT" envDefault:"4s"`
-	IdleTimeout time.Duration `env:"IDLE_TIMEOUT" envDefault:"120s"`
+	Address        string        `env:"SERVER_ADDR" envDefault:"localhost:8080"`
+	RequestTimeout time.Duration `env:"REQUEST_TIMEOUT" envDefault:"4s"`
+	IdleTimeout    time.Duration `env:"IDLE_TIMEOUT" envDefault:"120s"`
 }
 
 func MustLoad() Config {
