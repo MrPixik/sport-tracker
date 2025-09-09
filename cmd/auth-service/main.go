@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/mrpixik/sport-tracker/internal/auth/config"
 	"github.com/mrpixik/sport-tracker/internal/auth/storage/postgres"
 	"github.com/mrpixik/sport-tracker/pkg/logger"
@@ -10,10 +12,7 @@ import (
 )
 
 func main() {
-	// $env:auth_config_path="configs/auth/local.yaml"
 	cfg := config.MustLoad()
-
-	//fmt.Println(cfg)
 
 	log := logger.MustInit(cfg.Env)
 
@@ -36,7 +35,9 @@ func main() {
 		fmt.Println(err.Error())
 	}
 
-	//TODO: init router
+	router := chi.NewRouter()
+	router.Use(middleware.RequestID)
+	router.Use(middleware.Logger)
 
 	//TODO: init server
 }

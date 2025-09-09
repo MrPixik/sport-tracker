@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"log"
+	"github.com/mrpixik/sport-tracker/pkg/logger/sl/handlers/slogpretty"
 	"log/slog"
 	"os"
 )
@@ -9,13 +9,12 @@ import (
 func MustInit(env string) *slog.Logger {
 	switch env {
 	case "local":
-		return slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
+		return slogpretty.SetupPrettySlog()
 	case "dev":
 		return slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))
 	case "prod":
 		return slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
 	default:
-		log.Fatalf("unknown environment: %s", env)
+		return slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}))
 	}
-	return nil
 }
