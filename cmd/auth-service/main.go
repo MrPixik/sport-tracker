@@ -1,11 +1,8 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 	"github.com/mrpixik/sport-tracker/internal/auth/config"
+	"github.com/mrpixik/sport-tracker/internal/auth/http-server/server"
 	"github.com/mrpixik/sport-tracker/internal/auth/storage/postgres"
 	"github.com/mrpixik/sport-tracker/pkg/logger"
 	"os"
@@ -26,18 +23,11 @@ func main() {
 	}
 	log.Debug("Successful initialization of storage")
 
-	err = db.DeleteUser(context.Background(), "pixik", "123")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	err = db.CreateUser(context.Background(), "pixik", "123")
-	if err != nil {
-		fmt.Println(err.Error())
-	}
+	router := server.InitRouter(&cfg, log)
+	log.Debug("Successful initialization of router")
 
-	router := chi.NewRouter()
-	router.Use(middleware.RequestID)
-	router.Use(middleware.Logger)
+	_ = db
+	_ = router
 
 	//TODO: init server
 }
